@@ -85,4 +85,5 @@ let
 	#init_array
 
 	SUITE["rnn"] = @benchmarkable rnn_forward($nt,$np,$ns,$nq, out_F, s_F, inp_F, U, W, V) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB)) 
+end
 
