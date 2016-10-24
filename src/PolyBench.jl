@@ -6,6 +6,7 @@ const SUITE = BenchmarkGroup()
 const BENCH_DIRS = ["datamining",
                     "polyNN/CNN",
                     "polyNN/RNN",
+					"polyNN/LSTM",
                     "linear-algebra/blas",
                     "linear-algebra/kernels",
                     "linear-algebra/solvers",
