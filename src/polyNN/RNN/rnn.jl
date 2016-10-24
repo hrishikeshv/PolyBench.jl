@@ -9,6 +9,7 @@
 			end
 
 			if t>1
+				println(t)
 				for s=1:ns
 					s_F[t,r] +=W[r,s] * s_F[t-1][s]
 				end
