@@ -29,8 +29,10 @@ end
 	for t=nt:-1:1
 		for s=1:ns
 			del_IFOG[s,3] = c_F[t,s] * del_S[t,s]
+		end
 		for s=1:ns
 			del_C[t,s] += IFOG[s,3] * del_S[t,s]
+		end
 		if t>1
 			for s=1:ns
 				del_IFOG[s,2] = c_F[t-1,s] * del_C[t,s]
