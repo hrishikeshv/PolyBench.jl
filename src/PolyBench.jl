@@ -12,7 +12,7 @@ const BENCH_DIRS = ["datamining",
                     "medley",
                     "stencils"]
 
-function load(bench_dir::AbstractString)
+function load!(bench_dir::AbstractString)
 	print("loading $bench_dir...")
 	bench_dir_path = joinpath(dirname(@__FILE__), bench_dir)
 	for bench_file in filter(x -> endswith(x, "jl"), readdir(bench_dir_path))
