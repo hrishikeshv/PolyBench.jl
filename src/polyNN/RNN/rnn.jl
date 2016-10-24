@@ -4,7 +4,7 @@
 
 	for t=1:nt
 		for r=1:ns
-			for=1:np
+			for p=1:np
 				s_F[t,r] += U[r,p] * inp_F[t,p]
 			end
 
