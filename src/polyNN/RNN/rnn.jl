@@ -72,17 +72,45 @@ let
 	out_F = zeros(Float32,nt,nq)
 	s_F = zeros(Float32,nt,ns)
 	inp_F = zeros(Float32,nt,np)
-	U = zeros(ns,np)
-	W = zeros(ns,ns)
-	V = zeros(nq,ns)
-	err_out = zeros(nt,nq)
-	del_U = zeros(ns,np)
-	del_W = zeros(ns,ns)
-	del_V = zeros(nq,ns)
-	del_TA = zeros(ns)
-	del_TB = zeros(ns)
+	U = zeros(Float32,ns,np)
+	W = zeros(Float32,ns,ns)
+	V = zeros(Float32,nq,ns)
+	err_out = zeros(Float32,nt,nq)
+	del_U = zeros(Float32,ns,np)
+	del_W = zeros(Float32,ns,ns)
+	del_V = zeros(Float32,nq,ns)
+	del_TA = zeros(Float32,ns)
+	del_TB = zeros(Float32,ns)
 
 	#init_array
+	for a=1:nt, b=1:nq
+		out_F[a,b] = Float32((a*b)%nq) / nq
+		err_out[a,b] = Float32((a*(b+1))%nq) / nq
+	end
+	
+	for a=1:nt, b=1:ns
+		s_F[a,b] = Float32((a*b)%nt) / nt
+	end
+	
+	for a=1:nt, b=1:np
+		inp_F[a,b] = Float32((a*b)%np) / np
+	end
+	
+	for a=1:ns
+		for b=1:np
+			U[a,b] = Float32((a*b)%nt) / nt
+			del_U[a,b] = Float32(((a+1)*(b+1))%nt) / nt
+		end
+		for b=1:ns
+			W[a,b] = Float32((a*b)%ns) / ns
+			del_W[a,b] = Float32(((a+1)*(b+1))%nt) / nt
+		end
+
+	for a=1:nq, b=1:ns
+		V[a,b] = Float32(((a+1)*b)%nq) / nq
+		del_V[a,b] = Float32(((a+1)*(b+1))%nt) / nt
+	end
+		
 
 	SUITE["rnn"] = @benchmarkable rnn_forward($nt,$np,$ns,$nq, out_F, s_F, inp_F, U, W, V) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB)) 
 end
