@@ -44,11 +44,18 @@ let
 	err_in = zeros(Float32,nn,nc,nh,nw)
 	err_out = zeros(Float32,nn,nk,np,nq)
 
-#tic()
-#cnn_forward(inp_F, W, out_F,nu,nv)
-#run_time = toq()
-#println("done (took $run_time) seconds")
 	#init_array
+	
+	for a=1:nn, b=1:nk, e=1:np, d=1:nq
+		out_F[a,b,e,d] = Float32((a*b)%nn)
+		err_out[a,b,e,d] = Float32((e*d)%nk)
+
+	for a=1:nk, b=1:nc, e=1:nr, d=1:ns
+		W[a,b,e,d] = FLoat32(((a*b)%nc) / (10*nc))
+
+	for a=1:nn, b=1:nc, e=1:nh, d=1:nw
+		inp_F[a,b,e,d] = Float32((a*b)%nc)
+		err_in[a,b,e,d] = Float32((e*d)%nc)
 
 	SUITE["cnn"] =@benchmarkable cnn_backward(err_out, W, err_in, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
 
