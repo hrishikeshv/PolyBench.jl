@@ -52,7 +52,7 @@ let
 	end
 
 	for a=1:nk, b=1:nc, e=1:nr, d=1:ns
-		W[a,b,e,d] = FLoat32(((a*b)%nc) / (10*nc))
+		W[a,b,e,d] = Float32(((a*b)%nc) / (10*nc))
 	end
 
 	for a=1:nn, b=1:nc, e=1:nh, d=1:nw
