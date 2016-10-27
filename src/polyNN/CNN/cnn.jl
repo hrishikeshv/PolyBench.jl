@@ -4,7 +4,7 @@ function get_index(p, u, R, r)
 	p*u + R - r
 end
 
-function cnn_forward(inp_F, W, out_F,nu,nv)
+@polly function cnn_forward(inp_F, W, out_F,nu,nv)
 	nn,nk,np,nq = size(out_F)
 	nc,nh,nw = size(inp_F)[2:end]
 	nr,ns = size(W)[3:end]
@@ -15,7 +15,7 @@ function cnn_forward(inp_F, W, out_F,nu,nv)
 
 end
 
-function cnn_backward(err_out, W, err_in, nu, nv)
+@polly function cnn_backward(err_out, W, err_in, nu, nv)
 	nn,nk,np,nq = size(err_out)
 	nc,nh,nw = size(err_in)[2:end]
 	nr,ns = size(W)[3:end]
