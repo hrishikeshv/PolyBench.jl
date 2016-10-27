@@ -59,7 +59,14 @@ let
 		inp_F[a,b,e,d] = Float32((a*b)%nc)
 		err_in[a,b,e,d] = Float32((e*d)%nc)
 	end
+	
+	if isdefined(:mode)==false
+		mode="forward"
 
-	SUITE["cnn"] =@benchmarkable cnn_backward(err_out, W, err_in, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
+	if mode=="forward"
+		SUITE["cnn"] =@benchmarkable cnn_forward(inp_F, W, out_F, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
+	else	
+		SUITE["cnn"] =@benchmarkable cnn_backward(err_out, W, err_in, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
+	end
 
 end
