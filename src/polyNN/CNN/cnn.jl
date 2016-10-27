@@ -60,12 +60,11 @@ let
 		err_in[a,b,e,d] = Float32((e*d)%nc)
 	end
 	
-	if isdefined(:mode)==false
-		mode="forward"
-
-	if mode=="forward"
+	if length(ARGS)==0 || ARGS[1]=="forward"
+		print("Forward pass loaded")
 		SUITE["cnn"] =@benchmarkable cnn_forward(inp_F, W, out_F, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
-	else	
+	else
+		print("Backward pass loaded")
 		SUITE["cnn"] =@benchmarkable cnn_backward(err_out, W, err_in, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
 	end
 
