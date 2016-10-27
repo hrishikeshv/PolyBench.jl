@@ -105,6 +105,7 @@ let
 			W[a,b] = Float32((a*b)%ns) / ns
 			del_W[a,b] = Float32(((a+1)*(b+1))%nt) / nt
 		end
+	end
 
 	for a=1:nq, b=1:ns
 		V[a,b] = Float32(((a+1)*b)%nq) / nq
