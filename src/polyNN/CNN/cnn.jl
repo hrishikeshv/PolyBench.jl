@@ -60,6 +60,6 @@ let
 		err_in[a,b,e,d] = Float32((e*d)%nc)
 	end
 
-	SUITE["cnn"] =@benchmarkable cnn_backward(err_out, W, err_in, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
+	SUITE["cnn"] =@benchmarkable cnn_forward(inp_F, W, out_F, $nu, $nv) setup = (inp_F = copy($inp_F); W = copy($W); out_F = copy($out_F); err_out = copy($err_out); err_in = copy($err_in))
 
 end
