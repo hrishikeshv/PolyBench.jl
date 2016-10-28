@@ -39,6 +39,20 @@ let
     err_out=zeros(Float32,nn,nd,oh,ow)
 
     #init_array
+	
+	for a=1:nn,b=1:nd,c=1:oh,d=1:ow
+		out_F[a,b,c,d] = Float32((a*b + c*d) % nn)
+		err_out[a,b,c,d] = Float32((a+b+c+d) % nn)
+	end
 
-    SUITE["sumpool"] = @benchmarkable sumpool_forward($nn,$nd,$ih,$iw,$ow,$oh,$dh,$dw,$sh,$sw,inp_F,out_F) setup = (inp_F=copy($inp_F); out_F=copy($out_F); err_in=copy($err_in); err_out=copy($err_out))
+	for a=1:nn,b=1:nd,c=1:iw,d=1:ih
+		inp_F[a,b,c,d] = Float32((a*b + c*d) % nd)
+		err_in[a,b,c,d] = Float32((a+b+c+d) % nd)
+	end
+	
+	if length(ARGS)==0 || ARGS[1]=="forward"
+		SUITE["sumpool"] = @benchmarkable sumpool_forward($nn,$nd,$ih,$iw,$ow,$oh,$dh,$dw,$sh,$sw,inp_F,out_F) setup = (inp_F=copy($inp_F); out_F=copy($out_F); err_in=copy($err_in); err_out=copy($err_out))
+	else
+		SUITE["sumpool"] = @benchmarkable sumpool_backward($nn,$nd,$ih,$iw,$ow,$oh,$dh,$dw, err_in, err_out)  setup = (inp_F=copy($inp_F); out_F=copy($out_F); err_in=copy($err_in); err_out=copy($err_out))
+	end
 end
