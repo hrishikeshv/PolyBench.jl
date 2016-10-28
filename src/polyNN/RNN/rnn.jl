@@ -24,7 +24,7 @@
 end
 
 @polly function rnn_backward(nt,np,ns,nq,bt,inp_F,s_F,W,V,err_out,del_U,del_W,del_V,del_TA,del_TB)
-	
+
 	for t=nt:-1:1
 		for q=1:nq, s=1:ns
 				del_V[q,s] = err_out[t,q] * s_F[t,s]
@@ -87,15 +87,15 @@ let
 		out_F[a,b] = Float32((a*b)%nq) / nq
 		err_out[a,b] = Float32((a*(b+1))%nq) / nq
 	end
-	
+
 	for a=1:nt, b=1:ns
 		s_F[a,b] = Float32((a*b)%nt) / nt
 	end
-	
+
 	for a=1:nt, b=1:np
 		inp_F[a,b] = Float32((a*b)%np) / np
 	end
-	
+
 	for a=1:ns
 		for b=1:np
 			U[a,b] = Float32((a*b)%nt) / nt
@@ -111,13 +111,13 @@ let
 		V[a,b] = Float32(((a+1)*b)%nq) / nq
 		del_V[a,b] = Float32(((a+1)*(b+1))%nt) / nt
 	end
-		
+
 	if length(ARGS)==0 || ARGS[1]=="forward"
 		print("Forward pass loaded")
-		SUITE["rnn"] = @benchmarkable rnn_forward($nt,$np,$ns,$nq, out_F, s_F, inp_F, U, W, V) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB)) 
+		SUITE["rnn"] = @benchmarkable rnn_forward($nt,$np,$ns,$nq, out_F, s_F, inp_F, U, W, V) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB))
 	else
 		print("Backward pass loaded")
-		SUITE["rnn"] = @benchmarkable rnn_backward($nt,$np,$ns,$nq,$bt, inp_F, s_F, W, V, del_U, del_W, del_V, del_TA, del_TB) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB)) 
-
+		SUITE["rnn"] = @benchmarkable rnn_backward($nt,$np,$ns,$nq,$bt, inp_F, s_F, W, V, del_U, del_W, del_V, del_TA, del_TB) setup = (inp_F=copy($inp_F); out_F=copy($out_F); s_F=copy($s_F); U = copy($U); W = copy($W); V = copy($V); err_out=copy($err_out); del_U=copy($del_U); del_W=copy($del_W); del_V=copy($del_V); del_TA=copy($del_TA); del_TB=copy($del_TB))
+	end
 end
 
