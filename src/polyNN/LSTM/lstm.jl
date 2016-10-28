@@ -94,6 +94,9 @@ let
 
 	#init array
 
-	SUITE["lstm"]=@benchmarkable lstm_forward($nt,$np,$ns,$nq,s_F,inp_F,c_F,U,W,IFOG) setup = (s_F=copy($s_F); inp_F=copy($inp_F); c_F=copy($c_F); U=copy($U); W=copy($W); IFOG=copy($IFOG))
+	if (length(ARGS)==0) || ARGS[1]=="forward"
+		SUITE["lstm"]=@benchmarkable lstm_forward($nt,$np,$ns,$nq,s_F,inp_F,c_F,U,W,IFOG) setup = (s_F=copy($s_F); inp_F=copy($inp_F); c_F=copy($c_F); U=copy($U); W=copy($W); IFOG=copy($IFOG))
+	else
+		SUITE["lstm"]=@benchmarkable lstm_backward($nt,$np,$ns,$nq,s_F,inp_F,c_F,U,W,IFOG,del_S,del_C,del_U,del_W,del_IFOG) setup = (s_F=copy($s_F); inp_F=copy($inp_F); c_F=copy($c_F); U=copy($U); W=copy($W); IFOG=copy($IFOG))
+	end
 end
-
