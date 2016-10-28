@@ -94,6 +94,31 @@ let
 
 	#init array
 
+	for a=1:nt, b=1:ns
+		s_F[a,b] = Float32((a*b) % nt)
+		del_S[a,b] = Float32((a*(b+2)) % ns)
+		del_C[a,b] = Float32(((a+2)*(b+5)) % nt)
+		c_F[a,b] = Float32((a*b) % ns)
+	end
+
+	for a=1:ns, b=1:np, c=1:4
+		U[a,b,c] = Float32((a*(b+c)) % np)
+		del_U[a,b,c] = Float32(((a+c)*b) % ns)
+	end
+
+	for a=1:ns,b=1:ns,c=1:4
+		W[a,b,c] = Float32(((a+1)*(b+c)) % ns)
+		del_W[a,b,c] = Float32(((a+c)*(b+1)) % nt)
+	end
+
+	for b=1:ns,c=1:4
+		IFOG[b,c] = (b+2*c+1) / nt
+	end
+	
+	for a=1:nt,b=1:np
+		inp_F[a,b] = ((a*b) % np)
+	end
+
 	if (length(ARGS)==0) || ARGS[1]=="forward"
 		SUITE["lstm"]=@benchmarkable lstm_forward($nt,$np,$ns,$nq,s_F,inp_F,c_F,U,W,IFOG) setup = (s_F=copy($s_F); inp_F=copy($inp_F); c_F=copy($c_F); U=copy($U); W=copy($W); IFOG=copy($IFOG))
 	else
